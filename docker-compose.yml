@@ -1,0 +1,151 @@
+version: "3.9"
+
+# ─────────────────────────────────────────────────────────────
+# AegisAI — Vendor Risk AI Copilot + AI QA Evaluation Framework
+# OCI Ampere A1 Flex (ARM64 / Ubuntu 22.04)
+#
+# Services in this file: ChromaDB, PostgreSQL, FastAPI, Streamlit, Grafana
+# NOT in this file (intentional):
+#   - Ollama: installed natively on the host for best ARM64 performance
+#   - Langfuse: running on Langfuse Cloud (Japan region) — saves 4GB RAM
+#   - GitHub Actions runner: configured separately
+#
+# All images verified to have linux/arm64 variants.
+# ─────────────────────────────────────────────────────────────
+
+services:
+
+  # ── ChromaDB — Vector Store ───────────────────────────────
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: aegisai-chromadb
+    ports:
+      - "8080:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    environment:
+      - ANONYMIZED_TELEMETRY=false
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  # ── PostgreSQL — Evaluation Results Store ─────────────────
+  postgres:
+    image: postgres:16
+    container_name: aegisai-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-aegisai}
+      POSTGRES_USER: ${POSTGRES_USER:-aegisai}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aegisai} -d ${POSTGRES_DB:-aegisai}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  # ── FastAPI — Core Backend ────────────────────────────────
+  aegisai-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegisai-api
+    ports:
+      - "8000:8000"
+    environment:
+      # ChromaDB
+      CHROMA_HOST: chromadb
+      CHROMA_PORT: "8000"
+      # PostgreSQL
+      POSTGRES_URL: postgresql://${POSTGRES_USER:-aegisai}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-aegisai}
+      # Ollama — running natively on host, accessed via host.docker.internal
+      OLLAMA_HOST: http://host.docker.internal:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:7b}
+      # RAG config — change these for experiments
+      CHUNK_SIZE: ${CHUNK_SIZE:-800}
+      CHUNK_OVERLAP: ${CHUNK_OVERLAP:-150}
+      TOP_K: ${TOP_K:-5}
+      SIMILARITY_THRESHOLD: ${SIMILARITY_THRESHOLD:-0.75}
+      # Langfuse — Cloud (Japan region)
+      LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY:?LANGFUSE_PUBLIC_KEY is required}
+      LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY:?LANGFUSE_SECRET_KEY is required}
+      LANGFUSE_HOST: ${LANGFUSE_HOST:-https://cloud.langfuse.com}
+      # Prompt versioning
+      PROMPT_VERSION: ${PROMPT_VERSION:-v1.0}
+      # App settings
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    depends_on:
+      chromadb:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    volumes:
+      # Mount source folders so changes reflect without rebuild during dev
+      - ./app:/app/app
+      - ./knowledge_base:/app/knowledge_base
+      - ./prompts:/app/prompts
+      - ./golden_dataset:/app/golden_dataset
+      - ./reports:/app/reports
+    extra_hosts:
+      # Allows containers to reach Ollama running on the host
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # ── Streamlit — Demo UI ───────────────────────────────────
+  aegisai-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
+    container_name: aegisai-ui
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: http://aegisai-api:8000
+    depends_on:
+      aegisai-api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── Grafana — AI Quality Dashboards ──────────────────────
+  grafana:
+    image: grafana/grafana:latest
+    container_name: aegisai-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:?GRAFANA_PASSWORD is required}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+# ── Named Volumes ─────────────────────────────────────────────
+volumes:
+  chroma_data:
+    driver: local
+  pg_data:
+    driver: local
+  grafana_data:
+    driver: local
