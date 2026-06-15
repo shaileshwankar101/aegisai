@@ -1,0 +1,123 @@
+VENDOR RISK SCORING MATRIX
+Version 1.2 | Classification: Internal
+Vendor Risk Management | Information Security
+
+1. PURPOSE AND SCOPE
+
+This matrix defines the quantitative scoring framework used to assess vendor security risk. It provides the authoritative control definitions, risk score impacts, composite scoring methodology, risk rating bands, and human review triggers used by the AegisAI Vendor Risk Copilot and Vendor Risk Analysts.
+
+This document is the definitive reference for all risk scoring decisions. Where conflict exists between this document and other guidance, this document takes precedence.
+
+2. CONTROL DEFINITIONS AND RISK SCORE IMPACTS
+
+The following security controls are assessed for each vendor. Each control is binary — either the control is in place (score impact = 0) or it is absent (score impact = the value specified below).
+
+Control 1: MFA Missing
+Definition: The vendor does not enforce Multi-Factor Authentication on user or administrator accounts accessing systems that handle client data.
+Risk Score Impact: +25 points
+Related Standard: MFA Security Standard v2.1
+Typical Composite Result: Medium when isolated
+
+Control 2: No Encryption at Rest
+Definition: The vendor does not encrypt data at rest using AES-256 or an equivalent approved algorithm on systems storing client data.
+Risk Score Impact: +30 points
+Related Policy: Encryption Policy v3.0
+Typical Composite Result: Medium when isolated; High in most compound combinations
+
+Control 3: No Annual Penetration Test
+Definition: The vendor has not conducted an annual penetration test by an approved third-party provider within the last 12 months.
+Risk Score Impact: +20 points
+Related Policy: Annual Penetration Testing Requirement Policy v2.0
+Typical Composite Result: Low when isolated (score = 20, at the Low ceiling)
+
+Control 4: No Incident Response Plan
+Definition: The vendor does not have a documented Incident Response Plan that defines breach notification, containment, and recovery procedures.
+Risk Score Impact: +15 points
+Related Policy: Incident Response Policy v2.3
+Typical Composite Result: Low when isolated
+
+Control 5: No SOC2 / ISO 27001 Evidence
+Definition: The vendor cannot provide a current SOC2 Type II report or ISO 27001 certification from an accredited certification body.
+Risk Score Impact: +15 points
+Related Guide: Compliance Mapping Guide v1.5
+Typical Composite Result: Low when isolated
+
+Control 6: SSO Missing
+Definition: The vendor does not support Single Sign-On integration via SAML 2.0 or OAuth 2.0 for platforms used by 25 or more organisational users.
+Risk Score Impact: +10 points
+Related Standard: MFA Security Standard v2.1
+Typical Composite Result: Low when isolated
+
+Control 7: No Data Retention Policy
+Definition: The vendor does not have a documented data retention policy defining retention periods and secure deletion procedures for organisational data.
+Risk Score Impact: +10 points
+Related Policy: Encryption Policy v3.0
+Typical Composite Result: Low when isolated
+
+Control 8: Critical CVE Exposure
+Definition: The vendor has one or more critical CVE vulnerabilities (CVSS score 9.0 or above) on production systems that have not been remediated within the mandated 30-day remediation window.
+Risk Score Impact: +30 points
+Related Policy: Annual Penetration Testing Requirement Policy v2.0
+Typical Composite Result: Medium when isolated; High in most compound combinations
+
+3. COMPOSITE SCORE CALCULATION
+
+The vendor risk score is calculated by summing the Risk Score Impact values of all absent controls identified during assessment. The composite score is capped at 100 — scores exceeding 100 are recorded as 100.
+
+Formula: Risk Score = sum(Risk Score Impact for each absent control), maximum 100
+
+Example calculation:
+- MFA Missing: +25
+- No Encryption at Rest: +30
+- No Annual Penetration Test: +20
+- Composite Score: 75 (High risk band)
+
+Example with cap:
+- All 8 controls absent: 25+30+20+15+15+10+10+30 = 155, recorded as 100 (Critical)
+
+4. RISK RATING BANDS
+
+Score 0 to 20: LOW RISK
+The vendor meets most security requirements with minor gaps. Remediation is recommended within standard timelines. Vendor onboarding can proceed with documented risk acceptance.
+
+Score 21 to 50: MEDIUM RISK
+The vendor has notable security gaps requiring remediation. Vendor onboarding may proceed with executive risk acceptance and documented remediation plan with agreed milestones. Remediation must be completed within 90 days for High-priority controls.
+
+Score 51 to 80: HIGH RISK
+The vendor has significant security gaps presenting material risk to organisational data. Vendor onboarding requires Vendor Risk Committee approval. Remediation plan must be submitted within 14 days with confirmed timelines. Enhanced monitoring applies.
+
+Score 81 to 100: CRITICAL RISK
+The vendor has critical security failures presenting severe risk. Vendor onboarding is suspended pending remediation. Existing contracts must be reviewed for termination or immediate compensating control implementation. Escalation to CISO and Legal is mandatory.
+
+5. HUMAN REVIEW TRIGGERS
+
+Vendor Risk Analysts must perform manual review before finalising any assessment in the following circumstances:
+
+- Confidence score below 0.70 — insufficient evidence to assess controls reliably
+- Composite score falls at a rating band boundary (scores 20, 50, 80) — boundary cases require analyst confirmation
+- Vendor is a Critical infrastructure provider, healthcare processor, or financial institution — enhanced scrutiny required
+- Vendor has remediated controls since the last assessment — partial credit may apply with documented evidence
+- Assessment input is incomplete or contradictory — analyst must gather additional evidence before scoring
+- Any security test failure detected during assessment (prompt injection, data leakage) — immediate human review
+
+6. RISK SCORE QUICK REFERENCE
+
+Low (0-20): SSO alone (10), Data Retention alone (10), IR Plan alone (15), SOC2 alone (15), Pentest alone (20)
+Medium (21-50): MFA alone (25), most dual governance failures
+High (51-80): Encryption + any one major control, CVE + any one major control
+Critical (81-100): Three or more major controls absent, or total score exceeds 80
+
+7. RELATED POLICIES AND STANDARDS
+
+- MFA Security Standard v2.1
+- Encryption Policy v3.0
+- Annual Penetration Testing Requirement Policy v2.0
+- Incident Response Policy v2.3
+- Compliance Mapping Guide v1.5
+
+8. DOCUMENT CONTROL
+
+Owner: Information Security — Vendor Risk Management
+Review Cycle: Annual
+Next Review Date: December 2026
+Approver: Chief Information Security Officer

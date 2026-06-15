@@ -1,0 +1,111 @@
+ANNUAL PENETRATION TESTING REQUIREMENT POLICY
+Version 2.0 | Classification: Internal
+Vendor Risk Management | Information Security
+
+1. PURPOSE AND SCOPE
+
+This policy defines mandatory penetration testing and vulnerability management requirements for third-party vendors and service providers. It establishes testing frequency, scope, methodology standards, CVE remediation timelines, and the risk classification applied when vendors fail to meet these requirements.
+
+This policy applies to all vendors that operate systems or applications that store, process, or transmit organisational data. Vendors hosting platforms in cloud environments are subject to this policy for application-layer testing; infrastructure-layer testing scope is defined in collaboration with the relevant cloud provider's shared responsibility model.
+
+2. ANNUAL PENETRATION TESTING REQUIREMENTS
+
+2.1 Testing Frequency
+
+All in-scope vendors must conduct a penetration test performed by an approved independent third-party provider at least once every 12 months. The test must be completed and results made available to Vendor Risk Management within 13 months of the previous test completion date.
+
+Vendors that have not conducted an annual penetration test within the last 12 months are considered non-compliant regardless of the reason for delay. Vendors citing operational constraints must provide a remediation plan with a committed test date within 60 days.
+
+2.2 Testing Scope
+
+The annual penetration test must cover at minimum:
+- External network perimeter assessment
+- Web application testing for all client-facing applications (OWASP Top 10)
+- Internal network segmentation testing
+- API security testing for all APIs used by client integrations
+- Authentication and authorisation controls testing
+- Social engineering assessment (phishing simulation)
+
+Mobile application testing is required where vendors provide mobile access to client data.
+
+2.3 Approved Testing Methodology
+
+Tests must follow a recognised methodology:
+- OWASP Testing Guide (preferred for application testing)
+- PTES (Penetration Testing Execution Standard)
+- NIST SP 800-115 Technical Guide to Information Security Testing
+
+Testing must be conducted by a qualified provider holding CREST, CHECK, or equivalent accreditation. Internal penetration tests conducted by vendor staff do not satisfy this requirement.
+
+2.4 Reporting Requirements
+
+Vendors must provide Vendor Risk Management with:
+- Executive summary of findings including overall risk rating
+- Full technical report with all findings, severity ratings, and proof of concept
+- Remediation status update within 90 days of test completion
+- Re-test confirmation for all Critical and High findings
+
+Reports are treated as confidential and retained for audit purposes. Redacted versions may be provided where vendors have legitimate confidentiality concerns regarding specific technical details.
+
+2.5 Risk Classification — No Annual Penetration Test
+
+Vendors that have not conducted an annual penetration test within the required timeframe receive a Risk Score Impact of +20 points. A missing penetration test alone places the vendor at a score of 20 — exactly at the Low risk ceiling. When combined with other control failures, the score escalates into Medium or higher bands. Vendors without an annual pen test must schedule and complete a test within 90 days. A confirmed test booking with date and provider must be submitted within 30 days of notification.
+
+3. CVE VULNERABILITY REMEDIATION REQUIREMENTS
+
+3.1 CVE Monitoring Obligation
+
+All vendors must maintain a documented vulnerability management programme that includes continuous monitoring of CVE disclosures relevant to their technology stack. Vendors must subscribe to relevant CVE notification feeds for all production software components, operating systems, and infrastructure platforms.
+
+3.2 Remediation Timelines by Severity
+
+Critical Severity CVEs (CVSS score 9.0 – 10.0):
+Vendors must remediate or apply compensating controls within 30 days of CVE disclosure or vendor notification, whichever occurs first. Critical CVEs on production systems handling client data that remain unpatched beyond 30 days constitute a critical control failure.
+
+High Severity CVEs (CVSS score 7.0 – 8.9):
+Vendors must remediate within 90 days of disclosure. Remediation status must be reported to Vendor Risk Management upon request.
+
+Medium Severity CVEs (CVSS score 4.0 – 6.9):
+Vendors must remediate within 180 days of disclosure, prioritised within standard patch cycles.
+
+Low Severity CVEs (CVSS score 0.1 – 3.9):
+Vendors must remediate within the next scheduled maintenance window.
+
+3.3 Compensating Controls for Critical CVEs
+
+Where immediate patching is not technically feasible for critical CVEs, vendors must implement all of the following compensating controls within 7 days:
+- Network-level isolation of affected systems where operationally possible
+- Enhanced monitoring and alerting on affected systems
+- Written compensating control plan approved by CISO equivalent
+- Commitment to patch within 30 days with weekly status updates
+
+3.4 Risk Classification — Critical CVE Exposure
+
+Vendors with one or more critical CVE vulnerabilities (CVSS 9.0+) on production systems that remain unpatched beyond the 30-day remediation window receive a Risk Score Impact of +30 points. This is equivalent to the impact of missing encryption at rest. Critical CVE exposure combined with other control failures rapidly escalates composite risk into the High or Critical rating bands. Immediate remediation is required. Vendors must provide patch confirmation or compensating controls evidence within 14 days of notification.
+
+4. RISK SCORE IMPACTS SUMMARY
+
+Control: No Annual Penetration Test
+Risk Score Impact: +20 points
+Remediation Timeline: 90 days (test booking within 30 days)
+Evidence Required: Signed penetration test statement of work or completed report
+
+Control: Critical CVE Exposure
+Risk Score Impact: +30 points
+Remediation Timeline: Immediate (14 days for confirmation)
+Evidence Required: Patch confirmation or compensating controls documentation
+
+5. RELATED POLICIES AND STANDARDS
+
+- Vendor Risk Scoring Matrix v1.2
+- Incident Response Policy v2.3
+- Encryption Policy v3.0
+- MFA Security Standard v2.1
+- Vulnerability Management Standard v1.1
+
+6. DOCUMENT CONTROL
+
+Owner: Information Security — Vendor Risk Management
+Review Cycle: Annual
+Next Review Date: December 2026
+Approver: Chief Information Security Officer

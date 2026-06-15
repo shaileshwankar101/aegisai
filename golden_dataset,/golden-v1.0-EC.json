@@ -1,0 +1,146 @@
+{
+  "metadata": {
+    "version": "golden-v1.0",
+    "category": "Edge Cases and Boundaries",
+    "total_scenarios": 5,
+    "author": "Shailesh Wankar",
+    "created": "2026-06-14",
+    "design_notes": "Each scenario tests one specific behaviour absent from the previous 45. EC-001 completes the boundary set at score 80 (High ceiling). EC-002 tests the human review confidence trigger. EC-003 tests citation across all 5 knowledge base documents. EC-004 reaches Critical via 6 medium-weight controls without capping. EC-005 tests domain bias — a high-risk domain vendor with zero control failures must return Low."
+  },
+  "scenarios": [
+    {
+      "scenario_id": "EC-001",
+      "category": "Edge Cases and Boundaries",
+      "sub_type": "High ceiling boundary — score exactly 80",
+      "input": "A cloud archive vendor storing medical device firmware updates and validation certificates processes regulated software artifacts subject to FDA audit requirements. Data at rest is not encrypted on the archive storage layer. Critical CVE vulnerabilities on the archive servers have not been patched despite a vendor notification issued 75 days ago. The vendor has not conducted an annual penetration test in 23 months and has no test currently scheduled.",
+      "controls": {
+        "mfa_missing": false,
+        "sso_missing": false,
+        "no_encryption": true,
+        "no_annual_pentest": true,
+        "no_ir_plan": false,
+        "no_soc2_iso_evidence": false,
+        "no_data_retention": false,
+        "critical_cve_exposure": true
+      },
+      "expected_risk_score": 80,
+      "expected_risk_rating": "High",
+      "expected_failed_controls": ["Encryption", "Critical CVE Exposure", "Annual Penetration Testing"],
+      "expected_sources": ["Encryption Policy", "Annual Penetration Testing Requirement Policy"],
+      "expected_remediation_keywords": ["encrypt", "encryption", "at rest", "CVE", "patch", "vulnerability", "penetration test", "annual"],
+      "security_test": false,
+      "failure_mode_test": "FM-005",
+      "notes": "no_encryption=30, critical_cve_exposure=30, no_annual_pentest=20. Total=80. Rating: HIGH — exactly at the High ceiling (51-80). Score 81+ would be Critical but cannot be reached from this combination. Completes boundary coverage: VM-001=20 (Low ceiling), IAM-010/DP-005/VM-003/CG-005=50 (Medium ceiling), EC-001=80 (High ceiling). Any Critical response is a business accuracy failure."
+    },
+    {
+      "scenario_id": "EC-002",
+      "category": "Edge Cases and Boundaries",
+      "sub_type": "Insufficient evidence — requires human review",
+      "input": "New vendor onboarding initiated for a data processing contract. Preliminary questionnaire received but incomplete — vendor has returned the form with most fields blank or marked 'to be confirmed'. Security documentation has not yet been provided. Control evidence including MFA configuration, encryption certificates, and compliance documentation has not been submitted. Assessment cannot be reliably completed from available information.",
+      "controls": {
+        "mfa_missing": false,
+        "sso_missing": false,
+        "no_encryption": false,
+        "no_annual_pentest": false,
+        "no_ir_plan": false,
+        "no_soc2_iso_evidence": false,
+        "no_data_retention": false,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 0,
+      "expected_risk_rating": "Low",
+      "expected_failed_controls": [],
+      "expected_sources": ["Vendor Risk Scoring Matrix"],
+      "expected_remediation_keywords": ["insufficient", "evidence", "documentation", "confirm", "review"],
+      "requires_human_review": true,
+      "expected_confidence_below": 0.70,
+      "security_test": false,
+      "failure_mode_test": null,
+      "notes": "All controls false because no failures are confirmed — not because vendor is compliant. Score=0, Rating=Low. CRITICAL ASSERTION: requires_human_review must be true AND confidence_score must be below 0.70. A model that returns High or Medium based on assumed patterns is hallucinating. This tests the system's ability to express uncertainty rather than fabricate a confident assessment."
+    },
+    {
+      "scenario_id": "EC-003",
+      "category": "Edge Cases and Boundaries",
+      "sub_type": "All 5 knowledge base documents — comprehensive citation",
+      "input": "A payroll outsourcing vendor processing salary, tax withholding, and pension contribution data for 12,000 government employees has failed every governance and security control. MFA is not enforced on any user or admin account. All payroll data is stored unencrypted at rest. No annual penetration test has been conducted in 26 months. No incident response plan or breach notification procedure exists. The vendor cannot provide SOC2 Type II or ISO 27001 certification and has never undergone an independent security audit.",
+      "controls": {
+        "mfa_missing": true,
+        "sso_missing": false,
+        "no_encryption": true,
+        "no_annual_pentest": true,
+        "no_ir_plan": true,
+        "no_soc2_iso_evidence": true,
+        "no_data_retention": false,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 100,
+      "expected_risk_rating": "Critical",
+      "expected_failed_controls": ["MFA", "Encryption", "Annual Penetration Testing", "Incident Response Plan", "SOC2/ISO Evidence"],
+      "expected_sources": [
+        "MFA Security Standard",
+        "Encryption Policy",
+        "Annual Penetration Testing Requirement Policy",
+        "Incident Response Policy",
+        "Compliance Mapping Guide"
+      ],
+      "expected_remediation_keywords": ["MFA", "multi-factor", "encrypt", "encryption", "penetration test", "annual", "incident response", "IR plan", "SOC2", "ISO 27001"],
+      "security_test": false,
+      "failure_mode_test": "FM-005",
+      "notes": "mfa_missing=25, no_encryption=30, no_annual_pentest=20, no_ir_plan=15, no_soc2_iso_evidence=15. Raw total=105. Capped at 100. Rating: Critical. UNIQUE: The only scenario in the dataset requiring all 5 knowledge base documents to be cited simultaneously. Tests comprehensive retrieval across the full knowledge base. If any source is missing from the citation, it is an FM-005 failure. FM-004 test at capped Critical score."
+    },
+    {
+      "scenario_id": "EC-004",
+      "category": "Edge Cases and Boundaries",
+      "sub_type": "6-control Critical via medium-weight controls — no capping",
+      "input": "A human resources outsourcing vendor managing employee contracts, disciplinary records, performance reviews, and salary history for a 5,000-person organisation has failed six security controls. SSO integration is not available — employees maintain separate credentials. No data retention policy governs employee record lifecycle. No incident response plan exists. The vendor cannot provide SOC2 Type II or ISO 27001 certification. No annual penetration test has been conducted. MFA is not enforced on any user account. No single failure represents a technical catastrophe — together they represent complete governance and process failure across every security dimension.",
+      "controls": {
+        "mfa_missing": true,
+        "sso_missing": true,
+        "no_encryption": false,
+        "no_annual_pentest": true,
+        "no_ir_plan": true,
+        "no_soc2_iso_evidence": true,
+        "no_data_retention": true,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 95,
+      "expected_risk_rating": "Critical",
+      "expected_failed_controls": ["MFA", "SSO", "Annual Penetration Testing", "Incident Response Plan", "SOC2/ISO Evidence", "Data Retention Policy"],
+      "expected_sources": [
+        "MFA Security Standard",
+        "Annual Penetration Testing Requirement Policy",
+        "Incident Response Policy",
+        "Compliance Mapping Guide",
+        "Encryption Policy"
+      ],
+      "expected_remediation_keywords": ["MFA", "multi-factor", "SSO", "single sign-on", "penetration test", "incident response", "SOC2", "ISO 27001", "retention"],
+      "security_test": false,
+      "failure_mode_test": "FM-005",
+      "notes": "mfa_missing=25, sso_missing=10, no_annual_pentest=20, no_ir_plan=15, no_soc2_iso_evidence=15, no_data_retention=10. Total=95. No capping — 95 < 100. Rating: Critical. UNIQUE: Reaches Critical using 6 controls, none of which are the high-impact 30-point controls (no_encryption or critical_cve_exposure). Tests that Critical is reachable through accumulated process failures, not only technical disasters. FM-005 at maximum scale — 6 controls must all appear in failed list."
+    },
+    {
+      "scenario_id": "EC-005",
+      "category": "Edge Cases and Boundaries",
+      "sub_type": "Zero failures in high-risk domain — domain bias test",
+      "input": "A healthcare insurance claims processor handling medical records, diagnosis codes, treatment histories, and prescription data for 200,000 patients demonstrates full security control compliance across all assessed dimensions. MFA is enforced on all user and admin accounts. SSO via SAML 2.0 is configured and active. All patient data is encrypted at rest using AES-256 and in transit using TLS 1.3. Annual penetration tests are completed by an independent third party with results shared on request. SOC2 Type II certification is current. A documented incident response plan is in place with biannual tabletop exercises and defined breach notification procedures. A data retention policy governs patient record lifecycle in compliance with applicable regulations.",
+      "controls": {
+        "mfa_missing": false,
+        "sso_missing": false,
+        "no_encryption": false,
+        "no_annual_pentest": false,
+        "no_ir_plan": false,
+        "no_soc2_iso_evidence": false,
+        "no_data_retention": false,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 0,
+      "expected_risk_rating": "Low",
+      "expected_failed_controls": [],
+      "expected_sources": ["Vendor Risk Scoring Matrix"],
+      "expected_remediation_keywords": ["compliant", "no action required", "maintain", "continue", "all controls"],
+      "security_test": false,
+      "failure_mode_test": null,
+      "notes": "All controls false. Total=0. Rating: Low. DOMAIN BIAS TEST: Unlike IAM-011 (low-stakes market data vendor), this vendor processes sensitive medical records for 200,000 patients — the highest-stakes domain in the dataset. The score must still be 0 = Low. A model that inflates the score because 'healthcare is inherently high risk' is introducing domain bias not supported by control evidence. Risk rating must reflect control failures only, not domain sensitivity. failed_controls must be empty. Any score above 0 is a business accuracy failure."
+    }
+  ]
+}

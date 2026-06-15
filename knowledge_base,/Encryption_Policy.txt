@@ -1,0 +1,114 @@
+ENCRYPTION POLICY
+Version 3.0 | Classification: Internal
+Vendor Risk Management | Information Security
+
+1. PURPOSE AND SCOPE
+
+This policy establishes encryption and data protection requirements for all third-party vendors and service providers that store, process, or transmit organisational data. It defines minimum standards for encryption at rest, encryption in transit, key management, and data retention. This policy applies to all vendor environments regardless of deployment model — cloud, on-premises, or hybrid.
+
+Vendors that cannot demonstrate compliance with this policy must disclose gaps during the vendor risk assessment process. Non-compliant controls are scored according to the Vendor Risk Scoring Matrix v1.2.
+
+2. ENCRYPTION AT REST REQUIREMENTS
+
+2.1 Mandatory Encryption at Rest
+
+All vendor systems that store any of the following data categories must implement encryption at rest using AES-256 or an equivalent approved algorithm:
+- Personally identifiable information (PII) including names, addresses, identification numbers, and contact details
+- Financial data including payment card data, bank account details, salary information, and transaction records
+- Health information including medical records, diagnosis codes, treatment histories, and prescription data
+- Legal and contractual documents including vendor agreements, litigation records, and intellectual property
+- Employee records including HR data, performance reviews, and disciplinary records
+- Authentication credentials and cryptographic keys
+
+Encryption at rest must be applied at the storage layer. Application-level encryption does not satisfy this requirement unless storage-layer encryption is not technically feasible and a documented exception has been approved.
+
+2.2 Approved Encryption Algorithms for Data at Rest
+
+Approved algorithms in order of preference:
+- AES-256 (Advanced Encryption Standard, 256-bit key)
+- AES-128 (acceptable for low-sensitivity data classifications)
+- ChaCha20-Poly1305 (for systems where AES hardware acceleration is unavailable)
+
+Deprecated algorithms not acceptable: DES, 3DES, RC4, MD5-based encryption.
+
+2.3 Risk Classification — Encryption at Rest Absent
+
+Vendors that do not encrypt data at rest receive a Risk Score Impact of +30 points. This is the highest single-control impact alongside Critical CVE Exposure in the Vendor Risk Scoring Matrix. Missing encryption at rest typically places composite risk scores in the High band (51–80). Vendors with encryption absent must remediate immediately. A remediation plan with timeline must be submitted within 14 days of notification.
+
+3. ENCRYPTION IN TRANSIT REQUIREMENTS
+
+3.1 Mandatory Transport Layer Security
+
+All data transmitted between vendor systems and client systems, between vendor services internally, or between vendor systems and the public internet must be encrypted in transit using:
+- TLS 1.3 (preferred)
+- TLS 1.2 (acceptable minimum)
+
+TLS 1.0 and TLS 1.1 are deprecated and not acceptable. All SSL versions are explicitly prohibited.
+
+Vendor APIs, web interfaces, and file transfer mechanisms must enforce TLS. Unencrypted HTTP, FTP, or SMTP transmissions are not acceptable for any data classification.
+
+4. KEY MANAGEMENT REQUIREMENTS
+
+Vendors must demonstrate the following key management practices:
+- Encryption keys are stored separately from the data they protect
+- Key rotation is performed at minimum annually for data at rest
+- Access to encryption keys is restricted to authorised systems and personnel with documented access controls
+- Key destruction procedures are defined and documented for decommissioned systems
+
+5. DATA RETENTION REQUIREMENTS
+
+5.1 Data Retention Policy
+
+Vendors that store organisational data must maintain a documented data retention policy that defines:
+- Retention periods by data category
+- Procedures for secure data deletion at end of retention period
+- Audit trail of data destruction events
+
+Data must not be retained indefinitely. Undefined retention constitutes a data governance failure.
+
+5.2 Minimum Retention Guidance by Category
+
+- Financial records: 7 years from transaction date
+- Employee records: Duration of employment plus 7 years
+- Healthcare records: As required by applicable regulation (minimum 10 years)
+- Customer PII: Duration of contractual relationship plus 3 years unless regulatory requirement specifies longer
+- Audit logs: Minimum 3 years
+
+5.3 Risk Classification — Data Retention Policy Absent
+
+Vendors with no documented data retention policy receive a Risk Score Impact of +10 points. This represents a governance gap indicating that data may be retained indefinitely without authorisation or oversight. Vendors must provide a documented retention policy within 120 days of notification.
+
+6. RISK SCORE IMPACTS SUMMARY
+
+Control: No Encryption at Rest
+Risk Score Impact: +30 points
+Risk Band Contribution: Significant — pushes most combinations to High
+Remediation Timeline: Immediate — remediation plan within 14 days
+
+Control: No Data Retention Policy
+Risk Score Impact: +10 points
+Risk Band Contribution: Low when isolated
+Remediation Timeline: 120 days
+
+7. REMEDIATION REQUIREMENTS
+
+7.1 Encryption at Rest — Remediation
+Vendors must implement AES-256 encryption at rest for all applicable data stores. Acceptable evidence includes encryption configuration audit, third-party security assessment confirming encryption status, or cloud provider encryption configuration screenshot for managed storage services.
+
+7.2 Data Retention Policy — Remediation
+Vendors must produce a documented data retention policy signed by an authorised officer. The policy must specify retention periods by data category, deletion procedures, and evidence of deletion. Policy must be reviewed annually.
+
+8. RELATED POLICIES AND STANDARDS
+
+- MFA Security Standard v2.1
+- Vendor Risk Scoring Matrix v1.2
+- Annual Penetration Testing Requirement Policy v2.0
+- Data Classification Standard v1.3
+- Cloud Security Standard v2.2
+
+9. DOCUMENT CONTROL
+
+Owner: Information Security — Vendor Risk Management
+Review Cycle: Annual
+Next Review Date: December 2026
+Approver: Chief Information Security Officer

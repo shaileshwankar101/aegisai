@@ -1,0 +1,208 @@
+{
+  "metadata": {
+    "version": "golden-v1.0",
+    "category": "Compliance and Governance",
+    "total_scenarios": 8,
+    "author": "Shailesh Wankar",
+    "created": "2026-06-14",
+    "primary_controls": {
+      "no_soc2_iso_evidence": 15,
+      "no_data_retention": 10
+    },
+    "design_notes": "SOC2/ISO evidence alone scores 15 = Low. Two natural boundaries: no_soc2+no_data_retention=25 (Low/Medium boundary) and no_soc2+no_pentest+no_ir=50 (Medium/High boundary). CG-008 raw sum equals exactly 100 without exceeding the cap."
+  },
+  "scenarios": [
+    {
+      "scenario_id": "CG-001",
+      "category": "Compliance and Governance",
+      "sub_type": "Single failure — SOC2/ISO (Low)",
+      "input": "A cloud-based document translation vendor cannot provide SOC2 Type II or ISO 27001 certification. The vendor acknowledges the documentation gap and states a SOC2 audit is scheduled for Q4 of the current year. No other security control gaps were identified during the assessment.",
+      "controls": {
+        "mfa_missing": false,
+        "sso_missing": false,
+        "no_encryption": false,
+        "no_annual_pentest": false,
+        "no_ir_plan": false,
+        "no_soc2_iso_evidence": true,
+        "no_data_retention": false,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 15,
+      "expected_risk_rating": "Low",
+      "expected_failed_controls": ["SOC2/ISO Evidence"],
+      "expected_sources": ["Compliance Mapping Guide"],
+      "expected_remediation_keywords": ["SOC2", "ISO 27001", "certification", "audit", "compliance"],
+      "security_test": false,
+      "failure_mode_test": null,
+      "notes": "no_soc2_iso_evidence=15. Total=15. Rating: Low. Compliance documentation alone is Low severity. Tests that model does not inflate governance gaps. Vendor has a remediation plan in progress — score must reflect current state, not planned state."
+    },
+    {
+      "scenario_id": "CG-002",
+      "category": "Compliance and Governance",
+      "sub_type": "Low/Medium boundary — score exactly 25",
+      "input": "A digital marketing vendor managing email campaign subscriber data including personal contact information cannot provide SOC2 Type II or ISO 27001 documentation. No data retention policy exists — subscriber personal data is retained indefinitely with no defined deletion schedule or data lifecycle management.",
+      "controls": {
+        "mfa_missing": false,
+        "sso_missing": false,
+        "no_encryption": false,
+        "no_annual_pentest": false,
+        "no_ir_plan": false,
+        "no_soc2_iso_evidence": true,
+        "no_data_retention": true,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 25,
+      "expected_risk_rating": "Medium",
+      "expected_failed_controls": ["SOC2/ISO Evidence", "Data Retention Policy"],
+      "expected_sources": ["Compliance Mapping Guide", "Encryption Policy"],
+      "expected_remediation_keywords": ["SOC2", "ISO 27001", "compliance", "retention", "deletion", "data lifecycle"],
+      "security_test": false,
+      "failure_mode_test": null,
+      "notes": "no_soc2_iso_evidence=15, no_data_retention=10. Total=25. Rating: Medium — first score in Medium band (21-50). Contrast with CG-001 (score=15=Low). Any Low response is a business accuracy failure."
+    },
+    {
+      "scenario_id": "CG-003",
+      "category": "Compliance and Governance",
+      "sub_type": "Compliance + Incident Response gap",
+      "input": "A third-party software testing vendor with read access to production source code repositories and CI/CD pipelines cannot provide SOC2 Type II or ISO 27001 evidence. The vendor has no documented incident response plan — in the event of a source code breach or credential compromise there is no defined containment or notification procedure.",
+      "controls": {
+        "mfa_missing": false,
+        "sso_missing": false,
+        "no_encryption": false,
+        "no_annual_pentest": false,
+        "no_ir_plan": true,
+        "no_soc2_iso_evidence": true,
+        "no_data_retention": false,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 30,
+      "expected_risk_rating": "Medium",
+      "expected_failed_controls": ["SOC2/ISO Evidence", "Incident Response Plan"],
+      "expected_sources": ["Compliance Mapping Guide", "Incident Response Policy"],
+      "expected_remediation_keywords": ["SOC2", "ISO 27001", "compliance", "incident response", "IR plan", "breach", "notification"],
+      "security_test": false,
+      "failure_mode_test": null,
+      "notes": "no_soc2_iso_evidence=15, no_ir_plan=15. Total=30. Rating: Medium. Two governance failures. Tests Incident Response Policy alongside Compliance Mapping Guide."
+    },
+    {
+      "scenario_id": "CG-004",
+      "category": "Compliance and Governance",
+      "sub_type": "Compliance + Vulnerability Management gap",
+      "input": "A business intelligence vendor with live read access to production databases for executive reporting dashboards has not achieved SOC2 Type II or ISO 27001 certification. No annual penetration test has been conducted in 19 months. No test is currently scheduled.",
+      "controls": {
+        "mfa_missing": false,
+        "sso_missing": false,
+        "no_encryption": false,
+        "no_annual_pentest": true,
+        "no_ir_plan": false,
+        "no_soc2_iso_evidence": true,
+        "no_data_retention": false,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 35,
+      "expected_risk_rating": "Medium",
+      "expected_failed_controls": ["SOC2/ISO Evidence", "Annual Penetration Testing"],
+      "expected_sources": ["Compliance Mapping Guide", "Annual Penetration Testing Requirement Policy"],
+      "expected_remediation_keywords": ["SOC2", "ISO 27001", "compliance", "penetration test", "pen test", "annual"],
+      "security_test": false,
+      "failure_mode_test": null,
+      "notes": "no_soc2_iso_evidence=15, no_annual_pentest=20. Total=35. Rating: Medium. Governance gap compounding with vulnerability management gap. Production database access amplifies the risk narrative."
+    },
+    {
+      "scenario_id": "CG-005",
+      "category": "Compliance and Governance",
+      "sub_type": "Three governance failures — Medium ceiling boundary (score=50)",
+      "input": "A recruitment process outsourcing vendor handling candidate CVs, background check results, and government-issued identification documents cannot provide SOC2 Type II or ISO 27001 certification. No annual penetration test has been conducted in 21 months. The vendor has no documented incident response plan or breach notification procedure.",
+      "controls": {
+        "mfa_missing": false,
+        "sso_missing": false,
+        "no_encryption": false,
+        "no_annual_pentest": true,
+        "no_ir_plan": true,
+        "no_soc2_iso_evidence": true,
+        "no_data_retention": false,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 50,
+      "expected_risk_rating": "Medium",
+      "expected_failed_controls": ["SOC2/ISO Evidence", "Annual Penetration Testing", "Incident Response Plan"],
+      "expected_sources": ["Compliance Mapping Guide", "Annual Penetration Testing Requirement Policy", "Incident Response Policy"],
+      "expected_remediation_keywords": ["SOC2", "ISO 27001", "compliance", "penetration test", "annual", "incident response", "IR plan"],
+      "security_test": false,
+      "failure_mode_test": "FM-005",
+      "notes": "no_soc2_iso_evidence=15, no_annual_pentest=20, no_ir_plan=15. Total=50. Rating: MEDIUM — exactly at the Medium ceiling. Any High response is a business accuracy failure. FM-005 test: all three controls must appear. Three distinct source documents expected."
+    },
+    {
+      "scenario_id": "CG-006",
+      "category": "Compliance and Governance",
+      "sub_type": "Compliance + Data Protection failures (High)",
+      "input": "A long-term document archiving vendor retaining 10-year financial records for regulatory audit purposes stores all archived documents without encryption at rest. No data retention policy defines the archive lifecycle or governs data disposal. The vendor cannot provide SOC2 Type II or ISO 27001 certification.",
+      "controls": {
+        "mfa_missing": false,
+        "sso_missing": false,
+        "no_encryption": true,
+        "no_annual_pentest": false,
+        "no_ir_plan": false,
+        "no_soc2_iso_evidence": true,
+        "no_data_retention": true,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 55,
+      "expected_risk_rating": "High",
+      "expected_failed_controls": ["SOC2/ISO Evidence", "Encryption", "Data Retention Policy"],
+      "expected_sources": ["Compliance Mapping Guide", "Encryption Policy"],
+      "expected_remediation_keywords": ["SOC2", "ISO 27001", "compliance", "encrypt", "encryption", "at rest", "retention", "disposal"],
+      "security_test": false,
+      "failure_mode_test": "FM-005",
+      "notes": "no_soc2_iso_evidence=15, no_encryption=30, no_data_retention=10. Total=55. Rating: High. Compliance gap combined with real data protection failures. FM-005: three controls must be identified. Encryption Policy covers both encryption and retention."
+    },
+    {
+      "scenario_id": "CG-007",
+      "category": "Compliance and Governance",
+      "sub_type": "Compliance + Access + Data failures (High)",
+      "input": "A vendor providing a customer identity and access management platform that stores authentication credentials and personal profiles for enterprise clients cannot provide SOC2 Type II or ISO 27001 certification — the platform has never been independently audited. Admin accounts managing the platform do not require MFA. Customer identity data stored on the platform is not encrypted at rest.",
+      "controls": {
+        "mfa_missing": true,
+        "sso_missing": false,
+        "no_encryption": true,
+        "no_annual_pentest": false,
+        "no_ir_plan": false,
+        "no_soc2_iso_evidence": true,
+        "no_data_retention": false,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 70,
+      "expected_risk_rating": "High",
+      "expected_failed_controls": ["SOC2/ISO Evidence", "MFA", "Encryption"],
+      "expected_sources": ["Compliance Mapping Guide", "MFA Security Standard", "Encryption Policy"],
+      "expected_remediation_keywords": ["SOC2", "ISO 27001", "compliance", "audit", "MFA", "multi-factor", "encrypt", "encryption", "at rest"],
+      "security_test": false,
+      "failure_mode_test": "FM-005",
+      "notes": "no_soc2_iso_evidence=15, mfa_missing=25, no_encryption=30. Total=70. Rating: High. Ironic: an identity management vendor with weak identity controls and no compliance evidence. FM-005: all three controls required. Three distinct source documents."
+    },
+    {
+      "scenario_id": "CG-008",
+      "category": "Compliance and Governance",
+      "sub_type": "Critical — four failures, score exactly 100",
+      "input": "A tax compliance software vendor processing sensitive financial and personal tax return data for 50,000 individuals cannot provide SOC2 Type II or ISO 27001 documentation and has never undergone an independent security audit. No MFA is enforced on any user or admin account. All tax return data is stored unencrypted at rest on cloud servers. Critical CVE vulnerabilities on production servers have remained unpatched for 90 days.",
+      "controls": {
+        "mfa_missing": true,
+        "sso_missing": false,
+        "no_encryption": true,
+        "no_annual_pentest": false,
+        "no_ir_plan": false,
+        "no_soc2_iso_evidence": true,
+        "no_data_retention": false,
+        "critical_cve_exposure": true
+      },
+      "expected_risk_score": 100,
+      "expected_risk_rating": "Critical",
+      "expected_failed_controls": ["SOC2/ISO Evidence", "MFA", "Encryption", "Critical CVE Exposure"],
+      "expected_sources": ["Compliance Mapping Guide", "MFA Security Standard", "Encryption Policy", "Annual Penetration Testing Requirement Policy"],
+      "expected_remediation_keywords": ["SOC2", "ISO 27001", "compliance", "MFA", "multi-factor", "encrypt", "encryption", "CVE", "patch", "vulnerability"],
+      "security_test": false,
+      "failure_mode_test": "FM-004",
+      "notes": "no_soc2_iso_evidence=15, mfa_missing=25, no_encryption=30, critical_cve_exposure=30. Total=100 exactly — no capping needed. Rating: Critical. Second scenario where raw sum = 100 (IAM-012 reached 155 and was capped). FM-004: numerical hallucination test at Critical. All four source documents expected."
+    }
+  ]
+}

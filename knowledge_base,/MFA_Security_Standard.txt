@@ -1,0 +1,98 @@
+MFA SECURITY STANDARD
+Version 2.1 | Classification: Internal
+Vendor Risk Management | Information Security
+
+1. PURPOSE AND SCOPE
+
+This standard defines Multi-Factor Authentication (MFA) and Single Sign-On (SSO) requirements for all third-party vendors and service providers that access, process, store, or transmit organisational data or systems. It applies to all vendor-managed platforms, portals, APIs, and administrative interfaces handling client data, employee information, financial records, or regulated content.
+
+All vendors onboarded or renewed after the effective date of this standard must demonstrate compliance prior to contract execution. Existing vendors must remediate non-compliant controls within the timelines specified in Section 6.
+
+2. MULTI-FACTOR AUTHENTICATION REQUIREMENTS
+
+2.1 Mandatory MFA Implementation
+
+All vendor platforms and portals meeting any of the following criteria must enforce multi-factor authentication for all user and administrator accounts:
+
+- Platforms that store, process, or transmit personally identifiable information (PII)
+- Platforms handling financial, payment, or transactional data
+- Platforms with administrative access to client systems or data
+- Platforms operating in regulated industries including healthcare, finance, or legal services
+- Any platform classified as business-critical in the vendor risk register
+
+MFA must be enforced at the account level — it is insufficient to offer MFA as an optional feature. Administrators must not be able to bypass MFA requirements.
+
+2.2 Accepted MFA Methods
+
+The following MFA methods are accepted in order of preference:
+- Hardware security keys (FIDO2/WebAuthn)
+- Authenticator application (TOTP — RFC 6238 compliant)
+- Push notification via registered mobile device
+- SMS one-time passcode (OTP) — accepted but not preferred due to SIM-swap risk
+
+Email-only verification codes are not accepted as a second factor.
+
+2.3 Risk Classification — MFA Absent
+
+Vendors that do not enforce multi-factor authentication on accounts accessing client data receive a Risk Score Impact of +25 points. This contribution places most single-control failures in the Medium risk band (21–50). Vendors with MFA absent must remediate within 90 days of notification. Failure to remediate within 90 days triggers escalation to Vendor Risk Committee review.
+
+3. SINGLE SIGN-ON (SSO) REQUIREMENTS
+
+3.1 SSO Integration Standard
+
+Vendors providing platforms accessed by more than 25 organisational users are required to support Single Sign-On integration. SSO integration must use one of the following protocols:
+- SAML 2.0 (Security Assertion Markup Language)
+- OAuth 2.0 with OpenID Connect (OIDC)
+
+SSO integration eliminates the requirement for employees to maintain separate credentials on vendor platforms, reducing credential sprawl and the associated risk of password reuse attacks.
+
+3.2 Risk Classification — SSO Absent
+
+Vendors that do not support SSO integration receive a Risk Score Impact of +10 points. SSO absence alone represents a Low risk (0–20 band). Vendors without SSO must remediate within 180 days. SSO absence in combination with MFA absence increases the composite risk score to +35 (Medium band).
+
+4. AUTHENTICATION STANDARDS FOR NON-MFA EXCEPTIONS
+
+Vendors seeking an exception to MFA requirements must demonstrate all of the following compensating controls:
+- Minimum 16-character password policy enforced
+- Account lockout after 5 consecutive failed attempts
+- Privileged access management (PAM) system in place
+- Network-level access controls restricting access to known IP ranges
+- Quarterly access reviews documented and provided to Vendor Risk Management
+
+Exceptions are valid for 12 months and must be renewed with updated evidence.
+
+5. REMEDIATION REQUIREMENTS
+
+5.1 MFA Absent — Remediation
+Vendors must implement MFA for all accounts within 90 days. Acceptable evidence of remediation includes screenshot of MFA enforcement policy in administrator console, configuration audit log, or independent security assessment confirming MFA is mandatory.
+
+5.2 SSO Absent — Remediation
+Vendors must provide SSO integration within 180 days. Acceptable evidence includes SAML metadata configuration confirmation, SSO integration test results, or vendor-provided SSO setup documentation.
+
+6. RISK SCORE IMPACTS SUMMARY
+
+Control: MFA Missing
+Risk Score Impact: +25 points
+Risk Band Contribution: Typically Medium when isolated
+Remediation Timeline: 90 days
+
+Control: SSO Missing
+Risk Score Impact: +10 points
+Risk Band Contribution: Low when isolated
+Remediation Timeline: 180 days
+
+Combined MFA and SSO absent: +35 points (Medium risk band)
+
+7. RELATED POLICIES AND STANDARDS
+
+- Encryption Policy v3.0
+- Vendor Risk Scoring Matrix v1.2
+- Access Control Standard v2.0
+- Privileged Access Management Policy v1.4
+
+8. DOCUMENT CONTROL
+
+Owner: Information Security — Vendor Risk Management
+Review Cycle: Annual
+Next Review Date: December 2026
+Approver: Chief Information Security Officer

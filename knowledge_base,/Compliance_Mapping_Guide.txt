@@ -1,0 +1,140 @@
+COMPLIANCE MAPPING GUIDE
+Version 1.5 | Classification: Internal
+Vendor Risk Management | Information Security
+
+1. PURPOSE AND SCOPE
+
+This guide defines compliance framework requirements for third-party vendors and service providers, specifies acceptable evidence of compliance, and maps the key controls across SOC2 Type II, ISO 27001, and NIST Cybersecurity Framework. It establishes what constitutes adequate compliance documentation and the risk classification applied to vendors that cannot provide it.
+
+Independent compliance certification is a baseline indicator of security maturity. Certified vendors have demonstrated their controls to an independent auditor. Vendors without certification present increased uncertainty about the actual state of their security controls — even if individual controls appear to be in place.
+
+This guide applies to all vendors handling organisational data, with enhanced requirements for vendors processing sensitive data categories including financial records, health information, and employee data.
+
+2. ACCEPTABLE COMPLIANCE FRAMEWORKS
+
+The following compliance frameworks are accepted as evidence of security control maturity, in order of preference:
+
+2.1 SOC2 Type II (Preferred for US-Headquartered Vendors)
+
+SOC2 Type II reports demonstrate that an independent CPA firm has assessed the vendor's security controls over a period of 6–12 months and confirmed they operate effectively. SOC2 Type II is distinguished from SOC2 Type I (which only assesses design of controls at a point in time) by its evaluation of control operation over time.
+
+Acceptable SOC2 evidence:
+- SOC2 Type II report dated within the last 12 months
+- Bridge letter from auditor confirming controls remain in place if report is more than 6 months old
+- SOC2 Type II report for the Trust Services Criteria most relevant to the engagement (Security is mandatory; Availability, Confidentiality, Processing Integrity, and Privacy as applicable)
+
+SOC2 Type I is not accepted as a standalone compliance evidence but may be accepted as a transitional measure with a confirmed SOC2 Type II timeline.
+
+2.2 ISO 27001 (Preferred for International Vendors)
+
+ISO 27001 certification from an accredited certification body demonstrates conformance to the international standard for information security management systems. The certification covers the full ISMS scope defined in the certificate.
+
+Acceptable ISO 27001 evidence:
+- Current ISO 27001 certificate from an IAF-accredited certification body
+- Certificate must be within its 3-year validity period
+- Annual surveillance audit confirmation (year 1 and year 2 of the 3-year cycle)
+- Scope of certification must cover the systems and services relevant to the engagement
+
+Expired ISO 27001 certificates are not acceptable. Vendors in the re-certification process must provide confirmation of the recertification timeline and a bridge letter from the certification body.
+
+2.3 NIST Cybersecurity Framework (Supplementary)
+
+NIST CSF self-assessments or third-party assessments are accepted as supplementary evidence only. NIST CSF alignment alone does not satisfy the compliance evidence requirement. It may be used to supplement SOC2 or ISO 27001 evidence, or accepted on a risk-based exception basis with CISO approval.
+
+2.4 Other Accepted Frameworks
+
+The following frameworks may be accepted as equivalent evidence on a case-by-case basis, with Vendor Risk Management approval:
+- PCI DSS v4.0 (for payment processing vendors — covers relevant security controls)
+- HITRUST CSF (for healthcare vendors — strong alignment with HIPAA requirements)
+- FedRAMP (for vendors serving US federal government agencies)
+- Cyber Essentials Plus (for UK-based vendors handling lower-sensitivity data)
+
+3. EVIDENCE REQUIREMENTS AND SUBMISSION
+
+3.1 Annual Submission
+
+Vendors must submit current compliance evidence annually as part of the vendor risk review cycle. Evidence submitted more than 13 months before the review date is considered expired.
+
+3.2 Evidence Submission Format
+
+All compliance documentation must be submitted via the secure vendor portal or encrypted email to Vendor Risk Management. Acceptable formats: PDF, secure portal upload. Evidence must include the vendor's name, certification scope, issuing body, and validity dates on the certificate or report cover page.
+
+3.3 Partial Scope Certifications
+
+Where a vendor's certification covers only a subset of their systems or services, the scope must be assessed to determine if it covers the systems used for the organisation's engagement. Out-of-scope systems handling organisational data require additional compensating control evidence.
+
+4. RISK CLASSIFICATION
+
+4.1 Risk Classification — No SOC2 / ISO Evidence
+
+Vendors that cannot provide current SOC2 Type II, ISO 27001, or approved equivalent documentation receive a Risk Score Impact of +15 points. Compliance evidence absence indicates the vendor has not subjected its security controls to independent third-party review. This does not confirm that controls are absent — but it removes the independent assurance that they are present.
+
+Compliance evidence absence alone places a vendor at score 15 — Low risk band. In combination with other control failures, compliance absence contributes to escalating composite risk. Vendors without compliance evidence must provide a path to certification within 12 months.
+
+4.2 Remediation Requirements
+
+Vendors without compliance evidence must:
+- Within 30 days: Submit a compliance roadmap identifying the target framework, planned certification timeline, and interim compensating controls
+- Within 12 months: Provide a current SOC2 Type II report or ISO 27001 certificate
+
+Compensating controls accepted in the interim period include:
+- Third-party security assessment by an approved provider (CREST or equivalent)
+- Detailed self-assessment against SOC2 Trust Services Criteria or ISO 27001 controls, signed by CISO
+- Enhanced contractual security obligations with audit rights
+
+5. CONTROL MAPPING — SOC2 TO ISO 27001
+
+The following mapping illustrates alignment between key SOC2 and ISO 27001 controls relevant to vendor risk assessment:
+
+Access Control
+SOC2: CC6.1 (logical and physical access controls), CC6.2 (access provisioning), CC6.3 (MFA requirements)
+ISO 27001: A.9 (Access Control) — includes A.9.4.2 (secure log-on procedures)
+
+Encryption
+SOC2: CC6.7 (data transmission encryption), CC6.1 (data at rest protection)
+ISO 27001: A.10 (Cryptography) — includes A.10.1.1 (policy on use of cryptographic controls)
+
+Incident Response
+SOC2: CC7.3 (identified security incidents), CC7.4 (incident response)
+ISO 27001: A.16 (Information Security Incident Management)
+
+Vulnerability Management
+SOC2: CC7.1 (system monitoring), CC7.2 (evaluation of security events)
+ISO 27001: A.12.6 (Technical Vulnerability Management)
+
+Risk Assessment
+SOC2: CC9.1 (risk assessment process)
+ISO 27001: Clause 6 (Planning — risk assessment and treatment)
+
+6. VENDOR DATA HANDLING REQUIREMENTS
+
+Regardless of compliance certification status, all vendors must:
+- Process organisational data only for the purposes specified in the contractual agreement
+- Not share organisational data with third parties without prior written consent
+- Delete or return organisational data upon contract termination within 30 days
+- Notify the organisation of any sub-processors handling organisational data
+- Maintain records of processing activities as required by applicable data protection regulation
+
+7. RISK SCORE IMPACTS SUMMARY
+
+Control: No SOC2 / ISO 27001 Evidence
+Risk Score Impact: +15 points
+Risk Band Contribution: Low when isolated; compounds with other controls
+Remediation Timeline: 12 months (roadmap within 30 days)
+Evidence Required: Current SOC2 Type II report or ISO 27001 certificate from accredited body
+
+8. RELATED POLICIES AND STANDARDS
+
+- Vendor Risk Scoring Matrix v1.2
+- MFA Security Standard v2.1
+- Encryption Policy v3.0
+- Annual Penetration Testing Requirement Policy v2.0
+- Incident Response Policy v2.3
+- Data Processing Agreement Template v3.1
+
+9. DOCUMENT CONTROL
+
+Owner: Information Security — Vendor Risk Management
+Review Cycle: Annual
+Next Review Date: December 2026
+Approver: Chief Information Security Officer

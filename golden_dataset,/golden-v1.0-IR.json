@@ -1,0 +1,135 @@
+{
+  "metadata": {
+    "version": "golden-v1.0",
+    "category": "Incident Response",
+    "total_scenarios": 5,
+    "author": "Shailesh Wankar",
+    "created": "2026-06-14",
+    "primary_controls": {
+      "no_ir_plan": 15
+    },
+    "design_notes": "IR plan alone scores 15 = Low, mirroring SOC2 (also 15). Scenarios escalate from isolated governance gap to active threat with zero response capability. No Critical in this category — four Criticals already exist across IAM, DP, VM, CG."
+  },
+  "scenarios": [
+    {
+      "scenario_id": "IR-001",
+      "category": "Incident Response",
+      "sub_type": "Single failure — IR plan (Low)",
+      "input": "A vendor providing time and attendance tracking software for workforce management has no documented incident response plan and no breach notification procedure. No other security control gaps were identified. All other controls including MFA, encryption, annual penetration testing, and compliance documentation are in place and evidenced.",
+      "controls": {
+        "mfa_missing": false,
+        "sso_missing": false,
+        "no_encryption": false,
+        "no_annual_pentest": false,
+        "no_ir_plan": true,
+        "no_soc2_iso_evidence": false,
+        "no_data_retention": false,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 15,
+      "expected_risk_rating": "Low",
+      "expected_failed_controls": ["Incident Response Plan"],
+      "expected_sources": ["Incident Response Policy"],
+      "expected_remediation_keywords": ["incident response", "IR plan", "response plan", "breach notification", "containment"],
+      "security_test": false,
+      "failure_mode_test": null,
+      "notes": "no_ir_plan=15. Total=15. Rating: Low. Mirrors CG-001 pattern — isolated governance gap is Low. Tests that IR gap alone does not inflate to Medium. Vendor narrative confirms all other controls are compliant."
+    },
+    {
+      "scenario_id": "IR-002",
+      "category": "Incident Response",
+      "sub_type": "IR + Compliance gap — Medium",
+      "input": "A cloud fax and secure messaging vendor transmitting Protected Health Information on behalf of healthcare providers has no documented incident response plan and no breach notification procedure compliant with regulatory requirements. The vendor cannot provide SOC2 Type II or ISO 27001 certification. PHI is transmitted through the vendor platform daily.",
+      "controls": {
+        "mfa_missing": false,
+        "sso_missing": false,
+        "no_encryption": false,
+        "no_annual_pentest": false,
+        "no_ir_plan": true,
+        "no_soc2_iso_evidence": true,
+        "no_data_retention": false,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 30,
+      "expected_risk_rating": "Medium",
+      "expected_failed_controls": ["Incident Response Plan", "SOC2/ISO Evidence"],
+      "expected_sources": ["Incident Response Policy", "Compliance Mapping Guide"],
+      "expected_remediation_keywords": ["incident response", "IR plan", "breach notification", "SOC2", "ISO 27001", "compliance", "certification"],
+      "security_test": false,
+      "failure_mode_test": null,
+      "notes": "no_ir_plan=15, no_soc2_iso_evidence=15. Total=30. Rating: Medium. Two governance gaps — no response plan and no compliance certification. Tests both Incident Response Policy and Compliance Mapping Guide citation."
+    },
+    {
+      "scenario_id": "IR-003",
+      "category": "Incident Response",
+      "sub_type": "IR + Vulnerability Management gap — Medium",
+      "input": "A vendor providing application performance monitoring with read access to production logs, error traces, and API response data has no documented incident response plan. If the monitoring platform is compromised, no defined containment or notification procedure exists. The vendor has not conducted an annual penetration test in 17 months and has no test currently scheduled.",
+      "controls": {
+        "mfa_missing": false,
+        "sso_missing": false,
+        "no_encryption": false,
+        "no_annual_pentest": true,
+        "no_ir_plan": true,
+        "no_soc2_iso_evidence": false,
+        "no_data_retention": false,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 35,
+      "expected_risk_rating": "Medium",
+      "expected_failed_controls": ["Incident Response Plan", "Annual Penetration Testing"],
+      "expected_sources": ["Incident Response Policy", "Annual Penetration Testing Requirement Policy"],
+      "expected_remediation_keywords": ["incident response", "IR plan", "response plan", "penetration test", "pen test", "annual"],
+      "security_test": false,
+      "failure_mode_test": null,
+      "notes": "no_ir_plan=15, no_annual_pentest=20. Total=35. Rating: Medium. No response plan combined with untested attack surface. If the monitoring platform is compromised, the vendor will not detect or respond to it."
+    },
+    {
+      "scenario_id": "IR-004",
+      "category": "Incident Response",
+      "sub_type": "IR + Access + Data failures — High",
+      "input": "A vendor managing customer loyalty programme data including purchase history, points balances, and stored payment card references for a retail chain has no incident response plan. MFA is not enforced on any user or admin account accessing the loyalty platform. Customer data including payment card references is stored unencrypted at rest.",
+      "controls": {
+        "mfa_missing": true,
+        "sso_missing": false,
+        "no_encryption": true,
+        "no_annual_pentest": false,
+        "no_ir_plan": true,
+        "no_soc2_iso_evidence": false,
+        "no_data_retention": false,
+        "critical_cve_exposure": false
+      },
+      "expected_risk_score": 70,
+      "expected_risk_rating": "High",
+      "expected_failed_controls": ["Incident Response Plan", "MFA", "Encryption"],
+      "expected_sources": ["Incident Response Policy", "MFA Security Standard", "Encryption Policy"],
+      "expected_remediation_keywords": ["incident response", "IR plan", "breach notification", "MFA", "multi-factor", "encrypt", "encryption", "at rest"],
+      "security_test": false,
+      "failure_mode_test": "FM-005",
+      "notes": "no_ir_plan=15, mfa_missing=25, no_encryption=30. Total=70. Rating: High. Three-control FM-005 scenario. A breach is easy to execute (no MFA, unencrypted data) and impossible to respond to (no IR plan). Three distinct source documents expected."
+    },
+    {
+      "scenario_id": "IR-005",
+      "category": "Incident Response",
+      "sub_type": "IR + CVE + Data — High (active threat, zero response)",
+      "input": "A vendor providing industrial control system monitoring for manufacturing facilities stores operational telemetry data from factory floor equipment. The vendor has no incident response plan — a compromise of the monitoring platform would have no defined containment, notification, or recovery procedure. Critical CVE vulnerabilities on the monitoring servers have not been patched despite vendor notification 60 days ago. All operational data stored by the platform is unencrypted at rest.",
+      "controls": {
+        "mfa_missing": false,
+        "sso_missing": false,
+        "no_encryption": true,
+        "no_annual_pentest": false,
+        "no_ir_plan": true,
+        "no_soc2_iso_evidence": false,
+        "no_data_retention": false,
+        "critical_cve_exposure": true
+      },
+      "expected_risk_score": 75,
+      "expected_risk_rating": "High",
+      "expected_failed_controls": ["Incident Response Plan", "Critical CVE Exposure", "Encryption"],
+      "expected_sources": ["Incident Response Policy", "Annual Penetration Testing Requirement Policy", "Encryption Policy"],
+      "expected_remediation_keywords": ["incident response", "IR plan", "containment", "CVE", "patch", "vulnerability", "encrypt", "encryption", "at rest"],
+      "security_test": false,
+      "failure_mode_test": "FM-005",
+      "notes": "no_ir_plan=15, critical_cve_exposure=30, no_encryption=30. Total=75. Rating: High. Active exploitable vulnerability, unprotected data, and zero response capability — three conditions defining a worst-case breach scenario. FM-005: all three controls required. Three source documents."
+    }
+  ]
+}

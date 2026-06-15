@@ -1,0 +1,144 @@
+INCIDENT RESPONSE POLICY
+Version 2.3 | Classification: Internal
+Vendor Risk Management | Information Security
+
+1. PURPOSE AND SCOPE
+
+This policy establishes mandatory Incident Response (IR) Plan requirements for all third-party vendors and service providers. It defines what constitutes an adequate incident response capability, breach notification obligations, response team requirements, testing expectations, and the risk classification applied to vendors without an IR plan.
+
+A vendor's inability to respond effectively to a security incident — particularly a data breach — directly impacts the organisation's ability to contain damage, meet regulatory notification obligations, and protect affected individuals. Vendor IR capability is therefore a mandatory control in the Vendor Risk Scoring Matrix.
+
+This policy applies to all vendors that store, process, or transmit organisational data regardless of volume, sensitivity level, or duration of storage.
+
+2. INCIDENT RESPONSE PLAN REQUIREMENTS
+
+2.1 Mandatory IR Plan Documentation
+
+All in-scope vendors must maintain a documented Incident Response Plan that includes at minimum:
+
+Incident Classification Framework
+- Definition of incident severity levels (P1 through P4 or equivalent)
+- Criteria for classifying a security event as an incident
+- Escalation thresholds that trigger external notification
+
+Containment Procedures
+- Steps to isolate affected systems to prevent spread of compromise
+- Evidence preservation procedures to maintain forensic integrity
+- Procedures for emergency credential rotation
+
+Notification Procedures
+- Internal escalation chain with named roles and contact details
+- Client notification procedure including trigger criteria and communication templates
+- Regulatory notification procedure per applicable law (GDPR, HIPAA, PCI DSS, and other relevant frameworks)
+
+Recovery Procedures
+- System restoration procedures from clean backups
+- Integrity verification steps prior to service restoration
+- Post-restoration monitoring requirements
+
+Post-Incident Review
+- Root cause analysis process
+- Lessons learned documentation
+- Control improvement tracking
+
+2.2 IR Plan Currency Requirements
+
+IR plans must be reviewed and updated at minimum annually. All updates must be version controlled with change history. The current IR plan version date must be provided to Vendor Risk Management on request.
+
+3. BREACH NOTIFICATION REQUIREMENTS
+
+3.1 Client Notification Timeline
+
+Vendors must notify the organisation within 72 hours of becoming aware of a confirmed or suspected security incident that may have exposed, compromised, or resulted in unauthorised access to organisational data.
+
+The 72-hour notification window begins at the point the vendor's security team confirms or reasonably suspects an incident has occurred — not at the point of resolution or full investigation completion.
+
+Initial notification must include:
+- Date and time the incident was detected
+- Nature of the incident and data potentially affected
+- Number of records or individuals potentially affected (if determinable)
+- Systems affected
+- Immediate containment actions taken
+- Next steps and estimated timeline for full investigation
+
+3.2 Regulatory Notification Support
+
+Vendors must cooperate fully with the organisation's regulatory notification obligations. Where an incident triggers notification requirements under GDPR, HIPAA, PCI DSS, or other applicable frameworks, vendors must provide all requested information within timelines required by the relevant regulation.
+
+3.3 Incident Communication Standards
+
+All incident communications must:
+- Be sent to the designated Vendor Risk Management contact by email and phone
+- Use encryption for any communication containing personal data details
+- Not be communicated via public channels (social media, press releases) before client notification
+
+4. RESPONSE TEAM REQUIREMENTS
+
+4.1 Designated IR Lead
+
+Vendors must designate a named individual as the Incident Response Lead responsible for coordinating response activities and serving as the primary point of contact for the organisation during an incident.
+
+The IR Lead must have:
+- Authority to initiate containment actions including system isolation
+- Direct access to executive leadership for immediate escalation
+- Contact details available to Vendor Risk Management at all times
+
+4.2 IR Team Composition
+
+The vendor's incident response team must include representation from:
+- Information Security (technical response)
+- Legal and Compliance (regulatory obligations)
+- Communications (internal and external communications)
+- Executive Leadership (critical decisions and resource allocation)
+
+External incident response retainer or cyber insurance with IR support is acceptable in lieu of fully in-house team where clearly documented.
+
+5. TABLETOP EXERCISE REQUIREMENTS
+
+Vendors must conduct tabletop exercises simulating incident response scenarios at least biannually (every 6 months). Quarterly tabletop exercises are strongly recommended for vendors processing high-sensitivity data.
+
+Tabletop exercise documentation must include:
+- Scenario description and participants
+- Findings and gaps identified during the exercise
+- Remediation actions with assigned owners and timelines
+- Sign-off by IR Lead
+
+Evidence of tabletop exercise completion must be available to Vendor Risk Management on request.
+
+6. RISK CLASSIFICATION
+
+6.1 Risk Classification — No Incident Response Plan
+
+Vendors that cannot demonstrate a documented Incident Response Plan meeting the requirements in Section 2 receive a Risk Score Impact of +15 points. IR plan absence indicates that in the event of a breach, the vendor has no defined procedure for containment, notification, or recovery — directly increasing organisational exposure and potentially triggering regulatory breach notification failures.
+
+IR plan absence alone places a vendor in the Low risk band (score 15). Combined with other control failures, it contributes to Medium or High composite risk scores.
+
+6.2 Remediation Requirements
+
+Vendors without an IR plan must produce a compliant documented Incident Response Plan within 90 days. An interim breach notification contact list with defined escalation paths must be submitted within 14 days as a temporary compensating measure.
+
+Evidence of IR plan completion must include the signed IR plan document and confirmation from an executive officer that the plan has been reviewed and approved.
+
+7. RISK SCORE IMPACTS SUMMARY
+
+Control: No Incident Response Plan
+Risk Score Impact: +15 points
+Risk Band Contribution: Low when isolated; compounds with other controls
+Remediation Timeline: 90 days (interim contact list within 14 days)
+Evidence Required: Documented IR plan with executive sign-off
+
+8. RELATED POLICIES AND STANDARDS
+
+- Vendor Risk Scoring Matrix v1.2
+- MFA Security Standard v2.1
+- Encryption Policy v3.0
+- Annual Penetration Testing Requirement Policy v2.0
+- Compliance Mapping Guide v1.5
+- Business Continuity and Disaster Recovery Standard v1.2
+
+9. DOCUMENT CONTROL
+
+Owner: Information Security — Vendor Risk Management
+Review Cycle: Annual
+Next Review Date: December 2026
+Approver: Chief Information Security Officer
